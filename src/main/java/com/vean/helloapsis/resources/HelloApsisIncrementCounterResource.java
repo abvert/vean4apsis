@@ -37,9 +37,7 @@ public class HelloApsisIncrementCounterResource {
     @Timed
     public CounterInfo sayHelloAndIncrementCounter(@QueryParam("name") Optional<String> name) {
         final String content = String.format(template, name.or(defaultName));
-        if (this.countersStorage.keySet().contains(content))
-            this.countersStorage.computeIfPresent(content, (cont, counter) -> this.countersStorage.get(content)).increment();
-        else
-            this.countersStorage.computeIfAbsent(content, k -> new LongAdder()).increment();
-        return new CounterInfo(content, this.countersStorage.get(content).longValue());    }
+        this.countersStorage.computeIfAbsent(content, k -> new LongAdder()).increment();
+        return new CounterInfo(content, this.countersStorage.get(content).longValue());    
+    }
 }
